@@ -33,8 +33,8 @@ export class BarChartComponent implements OnInit, OnChanges {
     console.log('sortedMovies', sortedMovies);
 
     // set margins
-    const margin = {top: 40, right: 40, left: 240, bottom: 40};
-    const width = 600 - margin.left - margin.right;
+    const margin = {top: 60, right: 40, left: 240, bottom: 40};
+    const width = 800 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
 
     // find highest x value for scaling
@@ -61,6 +61,15 @@ export class BarChartComponent implements OnInit, OnChanges {
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    // establish header for chart
+    const header = svg
+      .append('g')
+      .attr('class', 'bar-header')
+      .attr('transform', `translate(0, -${margin.top / 2})`)
+      .append('text');
+
+    header.append('tspan').text('Top 2019 Movies by Revenue');
+
     // draw horiztonal bars
     const bars = svg
       .selectAll('.bar')
@@ -73,15 +82,15 @@ export class BarChartComponent implements OnInit, OnChanges {
       .style('fill', 'green');
 
     // draw x-axis
-    // const xAxis = d3.axisTop(xScale)
-    //   .tickFormat(d3.format('~s'))
-    //   .tickSizeInnr(-height)
-    //   .tickSizeOuter(0);
+    const xAxis = d3.axisTop(xScale)
+      .tickFormat(d3.format('~s'))
+      .tickSizeInner(-height)
+      .tickSizeOuter(0);
 
-    // const xAxisAppend = svg
-    //   .append('g')
-    //   .attr('class', 'x axis')
-    //   .call(xAxis);
+    const xAxisAppend = svg
+      .append('g')
+      .attr('class', 'x axis')
+      .call(xAxis);
 
     // draw y axis text
     const yAxis = d3.axisLeft(yScale).tickSize(0);
